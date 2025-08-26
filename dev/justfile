@@ -1,14 +1,17 @@
-compose_order := "-f docker-compose.dev.yml -f ../prod/docker-compose.yml"
+compose_order := "docker compose -f docker-compose.dev.yml -f ../prod/docker-compose.yml"
 
 dev-init:
     echo ".env" > .gitignore;
     cp -i .env-template .env;
 
 dev-config:
-    docker-compose -f
+    {{compose_order}} config
 
-dev-up:
-    docker-compose {{compose_order}} up -d --build
+dev-build arg="--":
+    {{compose_order}} build {{arg}}
+
+dev-up arg="-d --build":
+    {{compose_order}} up {{arg}}
 
 dev-down:
-    docker-compose {{compose_order}} down
+    {{compose_order}} down
