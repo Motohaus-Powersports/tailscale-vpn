@@ -2,7 +2,7 @@ name: tailscale-vpn-dev
 services:
   tailscale:
     image: tailscale/tailscale:latest
-    hostname: subnet-router
+    hostname: subnet-router-dev
     environment:
       - TS_AUTHKEY=${CLIENT_SECRET}
       - TS_ROUTES=172.28.5.0/24
@@ -23,6 +23,26 @@ services:
     networks:
       tailscale_net:
         ipv4_address: 172.28.5.4
+
+  dns:
+    image: 4km3/dnsmasq:2.90-r3
+    command:
+      - --no-resolv
+      - --no-hosts
+      - --keep-in-foreground
+      - --log-facility=-
+      - --domain=motohaus.internal
+      - --local=/motohaus.internal/
+      - --addn-hosts=/etc/dns/motohaus.internal.hosts
+      - --listen-address=0.0.0.0
+    cap_add:
+      - NET_ADMIN                 # required by dnsmasq
+    volumes:
+      - ./motohaus.internal.hosts:/etc/dns/motohaus.internal.hosts:ro
+    networks:
+      tailscale_net:
+        ipv4_address: 172.28.5.53
+    restart: unless-stopped
 
   nginx-oauth-test:
     image: nginx
