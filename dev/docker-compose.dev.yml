@@ -1,0 +1,19 @@
+services:
+  tailscale:
+    env_file:
+      - .env
+    environment:
+      - TS_ROUTES=172.42.5.0/24
+    volumes:
+      - ./tailscale_state:/var/lib/tailscale
+    networks:
+      tailscale_net:
+        ipv4_address: 172.42.5.4
+
+networks:
+  # access network
+  tailscale_net:
+    ipam:
+      config:
+        # manually set the subnet to assign ip addresses in
+        - subnet: 172.42.5.0/24

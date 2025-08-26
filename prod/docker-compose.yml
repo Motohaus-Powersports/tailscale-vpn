@@ -1,0 +1,21 @@
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    hostname: ${HOSTNAME}
+    environment:
+      - TS_AUTHKEY=${CLIENT_SECRET}
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container --snat-subnet-routes=true # set up tailscale side routing
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    devices:
+      # assign the virtual "tun" network device to this container
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      # assign network capabilities to this container
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      # enable ip forwarding for this container
+      - net.ipv4.ip_forward=1
+      - net.ipv6.conf.all.forwarding=1
+    restart: unless-stopped
