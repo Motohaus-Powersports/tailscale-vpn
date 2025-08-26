@@ -1,9 +1,7 @@
 services:
   tailscale:
     image: tailscale/tailscale:latest
-    hostname: ${HOSTNAME}
     environment:
-      - TS_AUTHKEY=${CLIENT_SECRET}
       - TS_EXTRA_ARGS=--advertise-tags=tag:container --snat-subnet-routes=true # set up tailscale side routing
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false

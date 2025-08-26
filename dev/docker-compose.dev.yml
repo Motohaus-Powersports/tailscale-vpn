@@ -1,8 +1,11 @@
+name: tailscale-dev
 services:
   tailscale:
+    hostname: ${HOSTNAME}
     env_file:
       - .env
     environment:
+      - TS_AUTHKEY=${CLIENT_SECRET}
       - TS_ROUTES=172.42.5.0/24
     volumes:
       - ./tailscale_state:/var/lib/tailscale

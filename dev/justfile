@@ -2,6 +2,7 @@ compose_order := "docker compose -f docker-compose.dev.yml -f ../prod/docker-com
 
 dev-init:
     echo ".env" > .gitignore;
+    echo "tailscale_state" >> .gitignore
     cp -i .env-template .env;
 
 dev-config:
