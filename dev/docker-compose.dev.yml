@@ -8,7 +8,7 @@ services:
       - TS_AUTHKEY=${CLIENT_SECRET}
       - TS_ROUTES=172.42.5.0/24
     volumes:
-      - ./tailscale_state:/var/lib/tailscale
+      - ./volumes/tailscale_state:/var/lib/tailscale
     networks:
       tailscale_net:
         ipv4_address: 172.42.5.4

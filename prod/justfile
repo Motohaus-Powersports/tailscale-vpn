@@ -1,3 +1,2 @@
 prod-init:
-    echo ".env" > .gitignore;
-    cp .env-template .env;
+    bash init.sh
